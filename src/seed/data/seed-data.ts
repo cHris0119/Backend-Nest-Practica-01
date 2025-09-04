@@ -5,7 +5,15 @@ export interface Product {
     price: number;
 }
 
-export const seedData: Product[] = [
+export interface User {
+  fullName: string;
+  email: string;
+  password: string;
+}
+
+
+
+export const productsData: Product[] = [
   {
     name: "Guitarra Acústica",
     stock: 15,
@@ -67,3 +75,9 @@ export const seedData: Product[] = [
     price: 150.00
   }
 ]
+
+export const userData: User = {
+  email: "test@gmail.com",
+  fullName: "test",
+  password: "123456"
+}

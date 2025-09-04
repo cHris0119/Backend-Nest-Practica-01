@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, ManyToMany, JoinTable } from "typeorm";
+import { Role } from "./role.entity";
 
 @Entity()
 export class User {
@@ -17,5 +18,9 @@ export class User {
 
     @Column( { type: 'boolean'})
     isActive: boolean;
+
+    @ManyToMany(() => Role, (role) => role.users)
+    @JoinTable({ name: 'user_roles' })
+    roles: Role[];
 
 }

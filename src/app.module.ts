@@ -7,6 +7,7 @@ import { Role, User } from './auth/entities';
 import { SeedModule } from './seed/seed.module';
 import { ConfigModule } from '@nestjs/config';
 import { Product } from './products/entities/product.entity';
+import { CommonModule } from './common/common.module';
 
 
 
@@ -28,7 +29,7 @@ import { Product } from './products/entities/product.entity';
     }),
     AuthModule, 
     ProductsModule, 
-    SeedModule
+    SeedModule, CommonModule
   ],
 })
 

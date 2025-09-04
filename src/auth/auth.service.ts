@@ -7,12 +7,14 @@ import { v4 as uuid } from 'uuid'
 import { User } from './entities';
 import { RegisterUserDto } from './dto/register-user-dto';
 import { LoginUserDto } from './dto/login-user-dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
 
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private jwtService: JwtService
   ) {}
 
 
@@ -52,19 +54,36 @@ export class AuthService {
     
     if( !bcrypt.compareSync(password, findedUser.password ) ) throw new BadRequestException('Incorrect password')
 
+    const payload = { username: findedUser.email, sub: findedUser.id } // sub suele ser id
+
     return {
-      id: findedUser.id,
       fullName: findedUser.fullName,
-      email: findedUser.email
+      email: findedUser.email,
+      access_token: this.jwtService.sign(payload)
     }
   }
 
 
   getAllUsers() {
 
-    return this.userRepository.find({ select: ['fullName', 'email'], where: { isActive: true} })
+    return this.userRepository.find({ 
+      select: ['fullName', 'email'], 
+      where: { isActive: true}, 
+      relations: ['roles']
+    })
 
   }
+
+  getUserById( id: string ){
+
+    return this.userRepository.findOne({
+      where: { id },
+      relations: ['roles']
+    })
+
+  }
+
+  // updateRole( userId: string, roleId: )
 
 
   private handleDBException( error: any ){

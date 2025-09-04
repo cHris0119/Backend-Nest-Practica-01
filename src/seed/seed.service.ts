@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
+
 import { ProductsService } from 'src/products/products.service';
-import { seedData } from './data/seed-data';
+import { productsData } from './data/seed-data';
 import { Product } from 'src/products/entities/product.entity';
 import { CreateProductDto } from 'src/products/dto/create-product.dto';
 
@@ -20,7 +21,7 @@ export class SeedService {
   private async deleteAndCreateProducts() {
     await this.productService.deleteAll()
 
-    const products = seedData
+    const products = productsData
 
     const insertPromises: Promise<{ msg: string; product: CreateProductDto & Product; }>[] = []
 
